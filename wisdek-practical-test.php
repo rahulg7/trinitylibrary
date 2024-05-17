@@ -65,6 +65,7 @@ $table_name = $wpdb->prefix . "trinitylibrary_std";
 
 $res1 = $wpdb->get_results("SELECT * FROM $wpdb->$table_name WHERE stdid='".$_POST['stdid']."'");
 
+$count=0;
 foreach( $res1 as $results )
 {
     $datetime1 = strtotime($result->time);
@@ -75,7 +76,7 @@ $days = $secs / 864000;
 
 if($days < 10)
 {
-
+ $count++;
 }
 else
 {
@@ -84,7 +85,7 @@ else
 
 }
 
-if($_POST['stdid']!="")
+if($_POST['stdid']!="" && $count<4)
 {
 
     $wpdb->insert($table_name, array(
