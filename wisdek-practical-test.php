@@ -26,7 +26,7 @@ $sql = "CREATE TABLE $table_name (
   time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
   stdname varchar(55) NOT NULL,
   bookname varchar(55) NOT NULL,
-  rtrn int(3) DEFAULT '',
+  rtrn int(3) DEFAULT '0',
   PRIMARY KEY  (id)
 ) $charset_collate;";
 
@@ -60,12 +60,37 @@ global $wpdb;
 
 $table_name = $wpdb->prefix . "trinitylibrary_std"; 
 
+
+//check if there is any book for the student which is due more than 10 days.
+
+$res1 = $wpdb->get_results("SELECT * FROM $wpdb->$table_name WHERE stdid='".$_POST['stdid']."'");
+
+foreach( $res1 as $results )
+{
+    $datetime1 = strtotime($result->time);
+$datetime2 = strtotime(date("Y-m-d h:i:sa");
+
+$secs = $datetime2 - $datetime1;// == <seconds between the two times>
+$days = $secs / 864000;
+
+if($days < 10)
+{
+
+}
+else
+{
+    echo 'This book :'. $results->bookname.' need to be returned. Approaching 10 days time';
+}
+
+}
+
 if($_POST['stdid']!="")
 {
 
     $wpdb->insert($table_name, array(
         'stdid' => $_POST['stdid'];
         'staffid' => $_POST['staffid'],
+        'time' => date("Y-m-d h:i:sa"),
         'stdname' => $_POST['stdname'],
         'bookname' => $_POST['bookname'],
         'rtrn' => $_POST['rtrn'], 
@@ -84,4 +109,34 @@ if($_POST['stdid']!="")
     <inout type="text" name="rtrn" id="rtrn"/>
     <inout type="submit" name="book_rcrd" value="Submit" id="book_rcrd"/>
     </form>';
+
+    //show record
+
+    $res = $wpdb->get_results("SELECT * FROM $wpdb->$table_name");
+
+    foreach( $res as $result ) {
+
+        echo $result->staffid;
+        echo $result->stdname;
+        echo $result->bookname;
+
+if($result->rtrn!=0 || $result->rtrn!="")
+{
+    echo "returning";
+}
+else
+{
+    echo "borrowing";
+}
+
+echo $result->time;
+
+        
+        
+        
+    }
+
+
+
+
 }
